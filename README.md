@@ -7,6 +7,7 @@ Tom's project is also accompanied with a great YouTube step-by-step tutorial exp
 
 Notable modifications contained within this project include:
 - improved logging functionality
+- improved error handling
 - incorporation of player bot AI routine that replicates keyboard and mouse input
 - ability to run headless gameclient (to assist in network date generation without human interaction)
 - addition of counters to packet structures (to assist in latency calculations)
