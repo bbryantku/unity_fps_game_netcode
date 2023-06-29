@@ -1,0 +1,1 @@
+{"serverId": "server01","maxPlayers": 5,"serverPort": 26950,"hLFApiUrl": "http://127.0.0.1:8080/api/","packetHandlerLogging": true,"packetSendLogging": true,"enableBandwidthThrottling": false,"sendDelayinMs": 0, "enableHyperledgerFabric": false, "enableHLFLogging": false}
