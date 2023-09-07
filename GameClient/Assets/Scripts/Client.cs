@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
@@ -78,11 +78,11 @@ public class Client : MonoBehaviour
     /// <summary>Attempts to connect to the server.</summary>
     public void ConnectToServer()
     {
-        tcp = new TCP();
-        udp = new UDP();
-
         InitializeSendTimeDictionaries();
         InitializeClientData();
+
+        tcp = new TCP();
+        udp = new UDP();
 
         isConnected = true;
         tcp.Connect(); // Connect tcp, udp gets connected once tcp is done
