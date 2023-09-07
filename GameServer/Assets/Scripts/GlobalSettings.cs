@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +24,21 @@ public class GlobalSettings : MonoBehaviour
         string _methodName= "GlobalSettings.Awake()";
         try 
         {
+
+             // Check for logging directories
+            if (!System.IO.Directory.Exists("custom_diag_data")){
+                System.IO.Directory.CreateDirectory("custom_diag_data");
+            };
+
+            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_json")){
+                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_json");
+            };
+
+            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_csv")){
+                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_csv");
+            };
+
+
             // Load default settings from file if it exists
             if (File.Exists ("./serverSettings.json")){
                 string _jSONFileSettings = Utilities.LoadFile("./serverSettings.json");
