@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +46,24 @@ public class UIManager : MonoBehaviour
             packetSendLogging = false;
             calcAndLogLatency = false;
             enablePlayerBot = false;
+
+            // Check for logging directories
+            if (!System.IO.Directory.Exists("custom_diag_data")){
+                System.IO.Directory.CreateDirectory("custom_diag_data");
+            };
+
+            if (!System.IO.Directory.Exists("custom_diag_data/latency_calcs")){
+                System.IO.Directory.CreateDirectory("custom_diag_data/latency_calcs");
+            };
+
+            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_json")){
+                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_json");
+            };
+
+            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_csv")){
+                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_csv");
+            };
+
             // Load default settings from file if it exists
             if (File.Exists ("./clientSettings.json")){
                 long _timeStamp= Utilities.GenLongTimeStamp();
