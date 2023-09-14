@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +20,7 @@ public class ServerHandle
                 "\"Username\": "+_username+"\", "+
                 "\"FromClient\": "+_fromClient+"\", "+
                 "\"RemoteEndPoint\": "+Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint+"\""+
-                "}}", "custom_diag_data/packet_data_json/recv_player_welcome_pkt.json"
+                "}}", "logs/packet_data_json/recv_player_welcome_pkt.json"
             );
             //log CSV
             Utilities.Log(_timeStamp+","+
@@ -28,7 +28,7 @@ public class ServerHandle
                 "RECV,"+ //Received or Sent
                 _fromClient+","+ //IndexInGameManagerDicts
                 "Server.clients["+_fromClient+"]" //DataStruct referencing index above
-                , "custom_diag_data/packet_data_csv/recv_Welcome.csv"
+                , "logs/packet_data_csv/recv_Welcome.csv"
             ); 
 
             Debug.Log($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}.");
@@ -75,7 +75,7 @@ public class ServerHandle
                     "\"quatz\": "+_rotation.z+", "+
                     "\"quatw\": "+_rotation.w+", "+
                     "\"PacketNumber\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/recv_player_movement_pkt.json"
+                    "}}", "logs/packet_data_json/recv_player_movement_pkt.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -83,7 +83,7 @@ public class ServerHandle
                     "RECV,"+ //Received or Sent
                     _fromClient+","+ //IndexInGameManagerDicts
                     "Server.clients["+_fromClient+"].player" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/recv_PlayerMovement.csv"
+                    , "logs/packet_data_csv/recv_PlayerMovement.csv"
                 ); 
             }// End Optional packet logging
         /*
@@ -141,14 +141,14 @@ public class ServerHandle
                     "\"psny\": "+_shootDirection.y+", "+
                     "\"psnz\": "+_shootDirection.z+", "+
                     "\"PacketNumber\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/recv_player_shoot_pkt.json"
+                    "}}", "logs/packet_data_json/recv_player_shoot_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerShoot,"+ //packetType
                     "RECV,"+ //Received or Sent
                     _fromClient+","+ //IndexInGameManagerDicts
                     "Server.clients["+_fromClient+"].player" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/recv_PlayerShoot.csv"
+                    , "logs/packet_data_csv/recv_PlayerShoot.csv"
                 ); 
             }// End Optional packet logging
 
@@ -180,14 +180,14 @@ public class ServerHandle
                     "\"psny\": "+_throwDirection.y+", "+
                     "\"psnz\": "+_throwDirection.z+", "+
                     "\"PacketNumber\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/recv_player_throw_pkt.json"
+                    "}}", "logs/packet_data_json/recv_player_throw_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerThrowItem,"+ //packetType
                     "RECV,"+ //Received or Sent
                     _fromClient+","+ //IndexInGameManagerDicts
                     "Server.clients["+_fromClient+"].player" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/recv_PlayerThrowItem.csv"
+                    , "logs/packet_data_csv/recv_PlayerThrowItem.csv"
                 ); 
             }// End Optional packet logging
 
