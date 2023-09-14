@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,14 +89,14 @@ public class ServerSend
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ToClient\": "+_toClient+", "+
                     "\"Message\": \""+_msg+
-                    "}}", "custom_diag_data/packet_data_json/send_player_welcome_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_welcome_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "Welcome,"+ //packetType
                     "SEND,"+ //Received or Sent
                     _toClient+","+ //clientIndex
                     "Server.clients["+_toClient+"].player" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_Welcome.csv"
+                    , "logs/packet_data_csv/send_Welcome.csv"
                 ); 
                 
             }// End Optional packet logging
@@ -139,14 +139,14 @@ public class ServerSend
                     "\"quaty\": "+_player.transform.rotation.y+", "+
                     "\"quatz\": "+_player.transform.rotation.z+", "+
                     "\"quatw\": "+_player.transform.rotation.w+
-                    "}}", "custom_diag_data/packet_data_json/send_spawn_player_pkt.json"
+                    "}}", "logs/packet_data_json/send_spawn_player_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "SpawnPlayer,"+ //packetType
                     "SEND,"+ //Received or Sent
                     _toClient+","+ //clientIndex
                     "Server.clients["+_toClient+"].player["+_player.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_SpawnPlayer.csv"
+                    , "logs/packet_data_csv/send_SpawnPlayer.csv"
                 ); 
             }// End Optional packet logging
 
@@ -187,14 +187,14 @@ public class ServerSend
                     "\"psny\": "+_player.transform.position.y+", "+
                     "\"psnz\": "+_player.transform.position.z+", "+
                     "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/send_player_position_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_position_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerPosition,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_PlayerPosition.csv"
+                    , "logs/packet_data_csv/send_PlayerPosition.csv"
                 ); 
             }// End Optional packet logging
 
@@ -234,14 +234,14 @@ public class ServerSend
                     "\"quatz\": "+_player.transform.rotation.z+", "+
                     "\"quatw\": "+_player.transform.rotation.w+", "+
                     "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/send_player_rotation_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_rotation_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerRotation,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_PlayerRotation.csv"
+                    , "logs/packet_data_csv/send_PlayerRotation.csv"
                 ); 
             }// End Optional packet logging
 
@@ -279,7 +279,7 @@ public class ServerSend
                 "SEND,"+ //Received or Sent
                 "ALL,"+ //clientIndex
                 "Server.clients[ALL].player["+_playerId+"]" //DataStruct referencing index above
-                , "custom_diag_data/packet_data_csv/send_PlayerDisconnected.csv"
+                , "logs/packet_data_csv/send_PlayerDisconnected.csv"
             ); 
 
             using (Packet _packet = new Packet((int)ServerPackets.playerDisconnected))
@@ -309,14 +309,14 @@ public class ServerSend
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+", "+
                     "\"PlayerHealth\": "+_player.health+
-                    "}}", "custom_diag_data/packet_data_json/send_player_health_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_health_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerHealth,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_PlayerHealth.csv"
+                    , "logs/packet_data_csv/send_PlayerHealth.csv"
                 ); 
             } // End Optional packet logging
 
@@ -347,14 +347,14 @@ public class ServerSend
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+
-                    "}}", "custom_diag_data/packet_data_json/send_player_respawn_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_respawn_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "PlayerRespawned,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_PlayerRespawned.csv"
+                    , "logs/packet_data_csv/send_PlayerRespawned.csv"
                 ); 
             }// End Optional packet logging
 
@@ -390,14 +390,14 @@ public class ServerSend
                     "\"psny\": "+_spawnerPosition.y+", "+
                     "\"psnz\": "+_spawnerPosition.z+", "+
                     "\"hasItem\": \""+_hasItem+"\""+
-                    "}}", "custom_diag_data/packet_data_json/send_create_item_spawner_pkt.json"
+                    "}}", "logs/packet_data_json/send_create_item_spawner_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "CreateItemSpawner,"+ //packetType
                     "SEND,"+ //Received or Sent
                     _toClient+","+ //clientIndex
                     "Server.clients["+_toClient+"].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_CreateItemSpawner.csv"
+                    , "logs/packet_data_csv/send_CreateItemSpawner.csv"
                 ); 
             }// End Optional packet logging
 
@@ -429,14 +429,14 @@ public class ServerSend
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+
-                    "}}", "custom_diag_data/packet_data_json/send_item_spawned_pkt.json"
+                    "}}", "logs/packet_data_json/send_item_spawned_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "ItemSpawned,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_ItemSpawned.csv"
+                    , "logs/packet_data_csv/send_ItemSpawned.csv"
                 ); 
             }// End Optional packet logging
 
@@ -467,14 +467,14 @@ public class ServerSend
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+","+
                     "\"ByPlayer\": "+_byPlayer+
-                    "}}", "custom_diag_data/packet_data_json/send_item_pickedUp_pkt.json"
+                    "}}", "logs/packet_data_json/send_item_pickedUp_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "ItemPickedUp,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_ItemPickedUp.csv"
+                    , "logs/packet_data_csv/send_ItemPickedUp.csv"
                 );
             }// End Optional packet logging
 
@@ -512,14 +512,14 @@ public class ServerSend
                     "\"psnz\": "+_projectile.transform.position.z+", "+
                     "\"ThrownByPlayer\": "+_thrownByPlayer+", "+
                     "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "custom_diag_data/packet_data_json/send_player_throw_projectile_pkt.json"
+                    "}}", "logs/packet_data_json/send_player_throw_projectile_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "SpawnProjectile,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_SpawnProjectile.csv"
+                    , "logs/packet_data_csv/send_SpawnProjectile.csv"
                 ); 
             }// End Optional packet logging
 
@@ -555,14 +555,14 @@ public class ServerSend
                     "\"psnx\": "+_projectile.transform.position.x+", "+
                     "\"psny\": "+_projectile.transform.position.y+", "+
                     "\"psnz\": "+_projectile.transform.position.z+
-                    "}}", "custom_diag_data/packet_data_json/send_projectile_position_pkt.json"
+                    "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "ProjectilePosition,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_ProjectilePosition.csv"
+                    , "logs/packet_data_csv/send_ProjectilePosition.csv"
                 );
             }// End Optional packet logging
 
@@ -596,14 +596,14 @@ public class ServerSend
                     "\"psnx\": "+_projectile.transform.position.x+", "+
                     "\"psny\": "+_projectile.transform.position.y+", "+
                     "\"psnz\": "+_projectile.transform.position.z+
-                    "}}", "custom_diag_data/packet_data_json/send_projectile_position_pkt.json"
+                    "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "ProjectileExploded,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_ProjectileExploded.csv"
+                    , "logs/packet_data_csv/send_ProjectileExploded.csv"
                 );
             }// End Optional packet logging
 
@@ -639,14 +639,14 @@ public class ServerSend
                     "\"psnx\": "+_enemy.transform.position.x+", "+
                     "\"psny\": "+_enemy.transform.position.y+", "+
                     "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "custom_diag_data/packet_data_json/send_spawn_enemy_to_all_pkt.json"
+                    "}}", "logs/packet_data_json/send_spawn_enemy_to_all_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "SpawnEnemy,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_SpawnEnemy.csv"
+                    , "logs/packet_data_csv/send_SpawnEnemy.csv"
                 );
             }// End Optional packet logging
 
@@ -678,14 +678,14 @@ public class ServerSend
                     "\"psnx\": "+_enemy.transform.position.x+", "+
                     "\"psny\": "+_enemy.transform.position.y+", "+
                     "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "custom_diag_data/packet_data_json/send_spawn_enemy_pkt.json"
+                    "}}", "logs/packet_data_json/send_spawn_enemy_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "SpawnEnemy,"+ //packetType
                     "SEND,"+ //Received or Sent
                     _toClient+","+ //clientIndex
                     "Server.clients["+_toClient+"].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_SpawnEnemy.csv"
+                    , "logs/packet_data_csv/send_SpawnEnemy.csv"
                 );
             }// End Optional packet logging
 
@@ -734,14 +734,14 @@ public class ServerSend
                     "\"psnx\": "+_enemy.transform.position.x+", "+
                     "\"psny\": "+_enemy.transform.position.y+", "+
                     "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "custom_diag_data/packet_data_json/send_enemy_position_pkt.json"
+                    "}}", "logs/packet_data_json/send_enemy_position_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "EnemyPosition,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_EnemyPosition.csv"
+                    , "logs/packet_data_csv/send_EnemyPosition.csv"
                 );
             }// End Optional packet logging
 
@@ -773,14 +773,14 @@ public class ServerSend
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"EnemyID\": "+_enemy.id+", "+
                     "\"EnemyHealth\": "+_enemy.health+
-                    "}}", "custom_diag_data/packet_data_json/send_enemyHealth_pkt.json"
+                    "}}", "logs/packet_data_json/send_enemyHealth_pkt.json"
                 );
                 Utilities.Log(_timeStamp+","+
                     "EnemyHealth,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/send_EnemyHealth.csv"
+                    , "logs/packet_data_csv/send_EnemyHealth.csv"
                 );
             }// End Optional packet logging
 
