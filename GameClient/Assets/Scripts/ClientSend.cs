@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +38,7 @@ public class ClientSend : MonoBehaviour
                     "\"MyID\": \""+Client.instance.myId+"\", "+
                     "\"Username\": \""+UIManager.instance.usernameField.text+"\", "+
                     "\"PacketNumber\": \""+Client.instance.packetCounter+"\""+
-                    "}}", "custom_diag_data/packet_data_json/send_welcomeReceived.json"
+                    "}}", "logs/packet_data_json/send_welcomeReceived.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -46,7 +46,7 @@ public class ClientSend : MonoBehaviour
                     "SEND,"+ //Received or Sent
                     Client.instance.myId+","+
                     "GameManager.players"
-                   , "custom_diag_data/packet_data_csv/send_WelcomeReceived.csv"
+                   , "logs/packet_data_csv/send_WelcomeReceived.csv"
                 ); 
             }// End Optional packet logging
 
@@ -97,7 +97,7 @@ public class ClientSend : MonoBehaviour
                         "\"quatz\": "+_rotation.z+", "+
                         "\"quatw\": "+_rotation.w+", "+
                         "\"PacketNumber\": \""+_packetNum+"\""+
-                        "}}", "custom_diag_data/packet_data_json/send_player_movement.json"
+                        "}}", "logs/packet_data_json/send_player_movement.json"
                     );
                     //log CSV
                     Utilities.Log(_timeStamp+","+
@@ -105,7 +105,7 @@ public class ClientSend : MonoBehaviour
                         "SEND,"+ //Received or Sent
                         Client.instance.myId+","+
                         "GameManager.players"
-                        , "custom_diag_data/packet_data_csv/send_PlayerMovement.csv"
+                        , "logs/packet_data_csv/send_PlayerMovement.csv"
                     ); 
                 }
 
@@ -156,7 +156,7 @@ public class ClientSend : MonoBehaviour
                         "\"psny\": "+_facing.y+", "+
                         "\"psnz\": "+_facing.z+", "+
                         "\"PacketNumber\": \""+_packetNum+"\""+
-                        "}}", "custom_diag_data/packet_data_json/send_player_shoot.json"
+                        "}}", "logs/packet_data_json/send_player_shoot.json"
                     );
                     //log CSV
                     Utilities.Log(_timeStamp+","+
@@ -164,7 +164,7 @@ public class ClientSend : MonoBehaviour
                         "SEND,"+ //Received or Sent
                         Client.instance.myId+","+
                         "GameManager.players"
-                        , "custom_diag_data/packet_data_csv/send_PlayerShoot.csv"
+                        , "logs/packet_data_csv/send_PlayerShoot.csv"
                     ); 
                 }
 
@@ -209,7 +209,7 @@ public class ClientSend : MonoBehaviour
                         "\"psny\": "+_facing.y+", "+
                         "\"psnz\": "+_facing.z+", "+
                         "\"PacketNumber\": \""+_packetNum+"\""+
-                        "}}", "custom_diag_data/packet_data_json/send_throw_item.json"
+                        "}}", "logs/packet_data_json/send_throw_item.json"
                     );
 
                     //log CSV
@@ -218,7 +218,7 @@ public class ClientSend : MonoBehaviour
                         "SEND,"+ //Received or Sent
                         Client.instance.myId+","+
                         "GameManager.players"
-                        , "custom_diag_data/packet_data_csv/send_PlayerThrowItem.csv"
+                        , "logs/packet_data_csv/send_PlayerThrowItem.csv"
                     ); 
                 }
 
