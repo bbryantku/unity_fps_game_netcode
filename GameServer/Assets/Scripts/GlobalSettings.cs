@@ -26,16 +26,16 @@ public class GlobalSettings : MonoBehaviour
         {
 
              // Check for logging directories
-            if (!System.IO.Directory.Exists("custom_diag_data")){
-                System.IO.Directory.CreateDirectory("custom_diag_data");
+            if (!System.IO.Directory.Exists("logs")){
+                System.IO.Directory.CreateDirectory("logs");
             };
 
-            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_json")){
-                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_json");
+            if (!System.IO.Directory.Exists("logs/packet_data_json")){
+                System.IO.Directory.CreateDirectory("logs/packet_data_json");
             };
 
-            if (!System.IO.Directory.Exists("custom_diag_data/packet_data_csv")){
-                System.IO.Directory.CreateDirectory("custom_diag_data/packet_data_csv");
+            if (!System.IO.Directory.Exists("logs/packet_data_csv")){
+                System.IO.Directory.CreateDirectory("logs/packet_data_csv");
             };
 
 
@@ -110,7 +110,7 @@ public class GlobalSettings : MonoBehaviour
             //Create header file for CSV data
             Utilities.Log("timeStamp"+","+
                     "PacketType,Action,EntityIndex,LocalEntityDict"
-                    , "custom_diag_data/packet_data_csv/Packet_stats_header_fields.csv"
+                    , "logs/packet_data_csv/Packet_stats_header_fields.csv"
                 );
 
         }
