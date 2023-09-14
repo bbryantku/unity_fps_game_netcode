@@ -550,7 +550,7 @@ public class Client : MonoBehaviour
             if(packetHandlerLogging||packetSendLogging){
                 Utilities.Log("timeStamp"+","+
                     "PacketType,Action,EntityIndex,LocalEntityDict"
-                    , "custom_diag_data/packet_data_csv/Packet_stats_header_fields.csv"
+                    , "logs/packet_data_csv/Packet_stats_header_fields.csv"
                 );
             }
 
@@ -566,7 +566,7 @@ public class Client : MonoBehaviour
                 UIManager.instance.UITextBox.text+="CalcandLogLatency Enabled!\n";
                 Utilities.Log("timeStamp"+","+
                     "PacketType,ClientID,PacketNum,ClientPktRecvTick,Latency"
-                    , "custom_diag_data/latency_calcs/Latency_header_fields.csv"
+                    , "logs/latency_calcs/Latency_header_fields.csv"
                 );
                 
 
