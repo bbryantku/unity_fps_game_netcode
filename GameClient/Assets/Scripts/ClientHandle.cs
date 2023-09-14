@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -23,7 +23,7 @@ public class ClientHandle : MonoBehaviour
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"Welcome Message\": \""+_msg+"\", "+
                     "\"ClientID\": "+_myId+
-                    "}}", "custom_diag_data/packet_data_json/recv_welcome.json"
+                    "}}", "logs/packet_data_json/recv_welcome.json"
                 );
 
                 //log CSV
@@ -32,7 +32,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     Client.instance.myId+","+ //IndexInGameManagerDicts
                     "Client.instance" //DataStruct referencing index above
-                    , "custom_diag_data/packet_data_csv/recv_Welcome.csv"
+                    , "logs/packet_data_csv/recv_Welcome.csv"
                 ); 
             }// End Optional packet logging
 
@@ -75,7 +75,7 @@ public class ClientHandle : MonoBehaviour
                     "\"quaty\": "+_rotation.y+", "+
                     "\"quatz\": "+_rotation.z+", "+
                     "\"quatw\": "+_rotation.w+
-                    "}}", "custom_diag_data/packet_data_json/recv_spawnPlayer.json"
+                    "}}", "logs/packet_data_json/recv_spawnPlayer.json"
                 );
 
                 //log CSV
@@ -84,7 +84,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _id+","+ //IndexInGameManagerDicts
                     "GameManager.players"
-                    , "custom_diag_data/packet_data_csv/recv_SpawnPlayer.csv"
+                    , "logs/packet_data_csv/recv_SpawnPlayer.csv"
                 ); 
             }// End Optional packet logging
 
@@ -120,7 +120,7 @@ public class ClientHandle : MonoBehaviour
                         "\"psny\": "+_position.y+", "+
                         "\"psnz\": "+_position.z+", "+
                         "\"PacketNumber\": "+_pktNum+
-                        "}}", "custom_diag_data/packet_data_json/recv_playerPosition.json"
+                        "}}", "logs/packet_data_json/recv_playerPosition.json"
                     );
 
                     //log CSV
@@ -129,7 +129,7 @@ public class ClientHandle : MonoBehaviour
                         "RECV,"+ //Received or Sent
                         _id+","+ //IndexInGameManagerDicts
                         "GameManager.players"
-                        , "custom_diag_data/packet_data_csv/recv_PlayerPosition.csv"
+                        , "logs/packet_data_csv/recv_PlayerPosition.csv"
                     ); 
                 }
 
@@ -190,7 +190,7 @@ public class ClientHandle : MonoBehaviour
                         "\"quatz\": "+_rotation.z+", "+
                         "\"quatw\": "+_rotation.w+", "+
                         "\"PacketNumber\": "+_pktNum+
-                        "}}", "custom_diag_data/packet_data_json/recv_playerRotation.json"
+                        "}}", "logs/packet_data_json/recv_playerRotation.json"
                     );
                     //log CSV
                     Utilities.Log(_timeStamp+","+              
@@ -198,7 +198,7 @@ public class ClientHandle : MonoBehaviour
                         "RECV,"+ //Received or Sent
                         _id+","+ //IndexInGameManagerDicts
                         "GameManager.players"
-                        , "custom_diag_data/packet_data_csv/recv_PlayerRotation.csv"
+                        , "logs/packet_data_csv/recv_PlayerRotation.csv"
                     ); 
                 }
 
@@ -255,7 +255,7 @@ public class ClientHandle : MonoBehaviour
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\":, \"Data parsed\": {"+
                     "\"PlayerID\": "+_id+
-                    "}}", "custom_diag_data/packet_data_json/recv_PlayerDisconnected.json"
+                    "}}", "logs/packet_data_json/recv_PlayerDisconnected.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -264,7 +264,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _id+","+ //IndexInGameManagerDicts
                     "GameManager.players"
-                    , "custom_diag_data/packet_data_csv/recv_PlayerDisconnected.csv"
+                    , "logs/packet_data_csv/recv_PlayerDisconnected.csv"
                 ); 
             }// End Optional packet logging
 
@@ -302,7 +302,7 @@ public class ClientHandle : MonoBehaviour
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_id+", "+
                     "\"New Health\": "+_health+
-                    "}}", "custom_diag_data/packet_data_json/recv_playerHealth.json"
+                    "}}", "logs/packet_data_json/recv_playerHealth.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -310,7 +310,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _id+","+ //IndexInGameManagerDicts
                     "GameManager.players"
-                    , "custom_diag_data/packet_data_csv/recv_PlayerHealth.csv"
+                    , "logs/packet_data_csv/recv_PlayerHealth.csv"
                 ); 
 
 
@@ -348,7 +348,7 @@ public class ClientHandle : MonoBehaviour
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_id+
-                    "}}", "custom_diag_data/packet_data_json/recv_PlayerRespawned.json"
+                    "}}", "logs/packet_data_json/recv_PlayerRespawned.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -356,7 +356,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _id+","+ //IndexInGameManagerDicts
                     "GameManager.players"
-                    , "custom_diag_data/packet_data_csv/recv_PlayerRespawned.csv"
+                    , "logs/packet_data_csv/recv_PlayerRespawned.csv"
                 ); 
 
             }// End Optional packet logging
@@ -389,7 +389,7 @@ public class ClientHandle : MonoBehaviour
                     "\"psnx\": "+_spawnerPosition.x+", "+
                     "\"psny\": "+_spawnerPosition.y+", "+
                     "\"psnz\": "+_spawnerPosition.z+
-                    "}}", "custom_diag_data/packet_data_json/recv_CreateItemSpawner.json"
+                    "}}", "logs/packet_data_json/recv_CreateItemSpawner.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -397,7 +397,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _spawnerId+","+ //IndexInGameManagerDicts
                     "GameManager.itemSpawners"
-                    , "custom_diag_data/packet_data_csv/recv_CreateItemSpawner.csv"
+                    , "logs/packet_data_csv/recv_CreateItemSpawner.csv"
                 );
             }
             GameManager.instance.CreateItemSpawner(_spawnerId, _spawnerPosition, _hasItem);
@@ -422,7 +422,7 @@ public class ClientHandle : MonoBehaviour
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+
-                    "}}", "custom_diag_data/packet_data_json/recv_ItemSpawned.json"
+                    "}}", "logs/packet_data_json/recv_ItemSpawned.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -430,7 +430,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _spawnerId+","+
                     "GameManager.itemSpawners"
-                    , "custom_diag_data/packet_data_csv/recv_ItemSpawned.csv"
+                    , "logs/packet_data_csv/recv_ItemSpawned.csv"
                 );
             }
             GameManager.itemSpawners[_spawnerId].ItemSpawned();
@@ -458,7 +458,7 @@ public class ClientHandle : MonoBehaviour
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+", "+
                     "\"PlayerID\": "+_byPlayer+
-                    "}}", "custom_diag_data/packet_data_json/recv_ItemPickedUp.json"
+                    "}}", "logs/packet_data_json/recv_ItemPickedUp.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+
@@ -466,7 +466,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _spawnerId+","+ //IndexInGameManagerDicts
                     "GameManager.itemSpawners"
-                    , "custom_diag_data/packet_data_csv/recv_ItemPickedUp.csv"
+                    , "logs/packet_data_csv/recv_ItemPickedUp.csv"
                 );
                 
             }
@@ -520,7 +520,7 @@ public class ClientHandle : MonoBehaviour
                         "\"psnz\": "+_position.z+", "+
                         "\"Thrown by PlayerID\": "+_thrownByPlayer+", "+
                         "\"PacketNumber\": "+_pktNum+
-                        "}}", "custom_diag_data/packet_data_json/recv_SpawnProjectile.json"
+                        "}}", "logs/packet_data_json/recv_SpawnProjectile.json"
                     );
                     //log CSV
                     Utilities.Log(_timeStamp+","+
@@ -528,7 +528,7 @@ public class ClientHandle : MonoBehaviour
                         "RECV,"+ //Received or Sent
                         _projectileId+","+ //IndexInGameManagerDicts
                         "GameManager.projectiles"
-                        , "custom_diag_data/packet_data_csv/recv_SpawnProjectile.csv"
+                        , "logs/packet_data_csv/recv_SpawnProjectile.csv"
                     );
                 }
                 
@@ -583,7 +583,7 @@ public class ClientHandle : MonoBehaviour
                     "\"psnx\": "+_position.x+", "+
                     "\"psny\": "+_position.y+", "+
                     "\"psnz\": "+_position.z+
-                    "}}", "custom_diag_data/packet_data_json/recv_ProjectilePosition.json"
+                    "}}", "logs/packet_data_json/recv_ProjectilePosition.json"
                 );
 
                 //log CSV
@@ -592,7 +592,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _projectileId+","+ //IndexInGameManagerDicts
                     "GameManager.projectiles"
-                    , "custom_diag_data/packet_data_csv/recv_ProjectilePosition.csv"
+                    , "logs/packet_data_csv/recv_ProjectilePosition.csv"
                 );
             }// End Optional packet logging
 
@@ -631,7 +631,7 @@ public class ClientHandle : MonoBehaviour
                     "\"psnx\": "+_position.x+", "+
                     "\"psny\": "+_position.y+", "+
                     "\"psnz\": "+_position.z+
-                    "}}", "custom_diag_data/packet_data_json/recv_ProjectileExploded.json"
+                    "}}", "logs/packet_data_json/recv_ProjectileExploded.json"
                 );
                 //log CSV
                 Utilities.Log(_timeStamp+","+        
@@ -639,7 +639,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _projectileId+","+ //IndexInGameManagerDicts
                     "GameManager.projectiles"
-                    , "custom_diag_data/packet_data_csv/recv_ProjectileExploded.csv"
+                    , "logs/packet_data_csv/recv_ProjectileExploded.csv"
                 );
                 
             }// End Optional packet logging
@@ -679,7 +679,7 @@ public class ClientHandle : MonoBehaviour
                     "\"psnx\": "+_position.x+", "+
                     "\"psny\": "+_position.y+", "+
                     "\"psnz\": "+_position.z+
-                    "}}", "custom_diag_data/packet_data_json/recv_SpawnEnemy.json"
+                    "}}", "logs/packet_data_json/recv_SpawnEnemy.json"
                 );
 
                 //log CSV
@@ -688,7 +688,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _enemyId+","+ //IndexInGameManagerDicts
                     "GameManager.enemies"
-                    , "custom_diag_data/packet_data_csv/recv_SpawnEnemy.csv"
+                    , "logs/packet_data_csv/recv_SpawnEnemy.csv"
                 );
             }// End Optional packet logging
 
@@ -720,7 +720,7 @@ public class ClientHandle : MonoBehaviour
                     "\"psnx\": "+_position.x+", "+
                     "\"psny\": "+_position.y+", "+
                     "\"psnz\": "+_position.z+
-                    "}}", "custom_diag_data/packet_data_json/recv_EnemyPosition.json"
+                    "}}", "logs/packet_data_json/recv_EnemyPosition.json"
                 );
 
                 //log CSV
@@ -729,7 +729,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _enemyId+","+ //IndexInGameManagerDicts
                     "GameManager.enemies"
-                    , "custom_diag_data/packet_data_csv/recv_EnemyPosition.csv"
+                    , "logs/packet_data_csv/recv_EnemyPosition.csv"
                 );
 
             }// End Optional packet logging
@@ -768,7 +768,7 @@ public class ClientHandle : MonoBehaviour
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"EnemyID\": "+_health+
-                    "}}", "custom_diag_data/packet_data_json/recv_EnemyHealth.json"
+                    "}}", "logs/packet_data_json/recv_EnemyHealth.json"
                 );
 
                 //log CSV
@@ -777,7 +777,7 @@ public class ClientHandle : MonoBehaviour
                     "RECV,"+ //Received or Sent
                     _enemyId+","+ //IndexInGameManagerDicts
                     "GameManager.enemies"
-                    , "custom_diag_data/packet_data_csv/recv_EnemyHealth.csv"
+                    , "logs/packet_data_csv/recv_EnemyHealth.csv"
                 ); 
 
 
@@ -816,7 +816,7 @@ public class ClientHandle : MonoBehaviour
             }else {
                 string _errMsg=("Error within "+_methodName+
                 "unknown _packetType provided");
-                Utilities.Log(_errMsg, "error.txt");
+                Utilities.Log(_errMsg, "logs/error.txt");
 
                 return;
             }
@@ -842,7 +842,7 @@ public class ClientHandle : MonoBehaviour
                 _pktNum+","+ //packetNumber
                 ThreadManager.tickCounter+","+ //Tick
                 _latency //Latency
-                , "custom_diag_data/latency_calcs/lat_"+_packetType+".csv"
+                , "logs/latency_calcs/lat_"+_packetType+".csv"
             ); 
 
         }
