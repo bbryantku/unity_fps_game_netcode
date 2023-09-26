@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -26,7 +26,8 @@ public class Client : MonoBehaviour
     public class TCP
     {
         public TcpClient socket;
-
+        public IPEndPoint remoteIPEndPoint; // Added to assist in logging, not requried for networking
+        public IPEndPoint localIPEndPoint; // Added to assist in logging, not requried for networking
         private readonly int id;
         private NetworkStream stream;
         private Packet receivedData;
@@ -42,9 +43,12 @@ public class Client : MonoBehaviour
         public void Connect(TcpClient _socket)
         {
             string _methodName= "Client.TCP.Connect()";
+            long _timeStamp= Utilities.GenLongTimeStamp();
             try
             {
                 socket = _socket;
+                remoteIPEndPoint=(IPEndPoint)socket.Client.RemoteEndPoint;
+                localIPEndPoint=(IPEndPoint)socket.Client.LocalEndPoint;
                 socket.ReceiveBufferSize = dataBufferSize;
                 socket.SendBufferSize = dataBufferSize;
 
@@ -55,6 +59,20 @@ public class Client : MonoBehaviour
 
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
                 ServerSend.Welcome(id, "Welcome to the server!");
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+id+", "+
+                    "\"PlayerID\": \"NA\", "+
+                    "\"PlayerName\": \"NA\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"ServerIPAddress\": \""+localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": \""+localIPEndPoint.Port+"\", "+
+                    "\"ClientIPAddress\": \""+remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": \""+remoteIPEndPoint.Port+"\""+
+                    "}}"
+                );
+                
             }
             catch (Exception e)
             {
@@ -176,8 +194,23 @@ public class Client : MonoBehaviour
         public void Disconnect()
         {
             string _methodName= "Client.TCP.Disconnect()";
+            long _timeStamp= Utilities.GenLongTimeStamp();
             try
             {
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+id+", "+
+                    "\"PlayerID\": "+Server.clients[id].player.id+", "+
+                    "\"PlayerName\": "+Server.clients[id].player.username+", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"ServerIPAddress\": \""+localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": \""+localIPEndPoint.Port+"\", "+
+                    "\"ClientIPAddress\": \""+remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": \""+remoteIPEndPoint.Port+"\""+
+                    "}}"
+                );
+
                 //Changed this... hopefully doesnt break other stuff
                 socket.Client.Close(); //Closes socket
                 stream.Close();
@@ -189,7 +222,6 @@ public class Client : MonoBehaviour
                 receivedData = null;
                 receiveBuffer = null;
 
-                long _timeStamp= Utilities.GenLongTimeStamp();
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"tcp.socket.Client\": \"Close()\","+
@@ -215,7 +247,7 @@ public class Client : MonoBehaviour
 
     public class UDP
     {
-        public IPEndPoint endPoint;
+        public IPEndPoint remoteIPEndPoint;
 
         private int id;
 
@@ -226,12 +258,26 @@ public class Client : MonoBehaviour
 
         /// <summary>Initializes the newly connected client's UDP-related info.</summary>
         /// <param name="_endPoint">The IPEndPoint instance of the newly connected client.</param>
-        public void Connect(IPEndPoint _endPoint)
+        public void Connect(IPEndPoint _remoteIPEndPoint)
         {
             string _methodName= "Client.UDP.Connect()";
+            long _timeStamp= Utilities.GenLongTimeStamp();
             try
             {
-                endPoint = _endPoint;
+                remoteIPEndPoint = _remoteIPEndPoint;
+                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+id+", "+
+                    "\"PlayerID\": \"NA\", "+
+                    "\"PlayerName\": \"NA\", "+
+                    "\"Protocol\": \"UDP\", "+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": \"NA\", "+
+                    "\"ClientIPAddress\": \""+remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": \""+remoteIPEndPoint.Port+"\""+
+                    "}}"
+                );
+
             }
             catch (Exception e)
             {
@@ -247,7 +293,7 @@ public class Client : MonoBehaviour
             string _methodName= "Client.UDP.SendData()";
             try
             {
-                 Server.SendUDPData(endPoint, _packet);
+                 Server.SendUDPData(remoteIPEndPoint, _packet);
             }
             catch (Exception e)
             {
@@ -286,9 +332,24 @@ public class Client : MonoBehaviour
         public void Disconnect()
         {
             string _methodName= "Client.UDP.Disconnect()";
+            long _timeStamp= Utilities.GenLongTimeStamp();
             try
             {
-                endPoint = null;
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                "\"ClientID\": "+id+", "+
+                "\"PlayerID\": "+Server.clients[id].player.id+", "+
+                "\"PlayerName\": "+Server.clients[id].player.username+", "+
+                "\"Protocol\": \"UDP\", "+
+                "\"ServerIPAddress\": \"NULL\", "+
+                "\"ServerPort\": \"NULL\", "+
+                "\"ClientIPAddress\": \""+remoteIPEndPoint.Address+"\", "+
+                "\"ClientPort\": \""+remoteIPEndPoint.Port+"\""+
+                "}}"
+            );
+                Debug.Log($"UDP remote host {remoteIPEndPoint} has been removed.");
+                remoteIPEndPoint = null;
+
             }
             catch (Exception e)
             {
@@ -355,12 +416,18 @@ public class Client : MonoBehaviour
         string _methodName= "Client.Disconnect()";
         try
         {
-            Debug.Log($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
+            Debug.Log($"TCP connection {tcp.socket.Client.LocalEndPoint} -> {tcp.socket.Client.RemoteEndPoint} has disconnected.");
             long _timeStamp= Utilities.GenLongTimeStamp();
             Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                 "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                 "\"ClientID\": "+id+", "+
-                "\"RemoteEndPoint\": \""+tcp.socket.Client.RemoteEndPoint+"\""+
+                "\"PlayerID\": "+Server.clients[id].player.id+", "+
+                "\"PlayerName\": "+Server.clients[id].player.username+", "+
+                "\"Protocol\": \"TCP\", "+
+                "\"ServerIPAddress\": \""+tcp.localIPEndPoint.Address+"\", "+
+                "\"ServerPort\": \""+tcp.localIPEndPoint.Port+"\", "+
+                "\"ClientIPAddress\": \""+tcp.remoteIPEndPoint.Address+"\", "+
+                "\"ClientPort\": \""+tcp.remoteIPEndPoint.Port+"\""+
                 "}}"
             );
             ThreadManager.ExecuteOnMainThread(() =>
