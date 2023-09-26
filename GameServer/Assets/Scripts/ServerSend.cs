@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Net.Sockets;
 
 public class ServerSend
 {
@@ -82,20 +83,48 @@ public class ServerSend
         string _methodName= "ServerSend.Welcome()";
         try
         {
+           // EndPoint _localEndpoint = Server.clients[_toClient].tcp.socket.Client.LocalEndPoint;
+            //EndPoint _remoteEndpoint = Server.clients[_toClient].tcp.socket.Client.RemoteEndPoint;
+
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+               /* Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ToClient\": "+_toClient+", "+
-                    "\"Message\": \""+_msg+
+                    "\"Message\": \""+_msg+"\","+
+                    //"\"LocalEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.LocalEndPoint+"\","+
+                    //"\"LocalEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.LocalEndPoint.Address+"\","+
+                    //"\"RemoteEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.RemoteEndPoint+"\""+
+                    //"\"LocalIPAddress\": \""+_localEndpoint.Address+"\","+
                     "}}", "logs/packet_data_json/send_player_welcome_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_toClient+", "+
+                    "\"PlayerID\": \"NA\", "+
+                    "\"PlayerName\": \"NA\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_toClient].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_toClient].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \""+Server.clients[_toClient].tcp.remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": "+Server.clients[_toClient].tcp.remoteIPEndPoint.Port+
+                    "}, "+
+                    "\"Message\": \""+_msg+"\""+
+                    "}}", "logs/packet_data_json/send_player_welcome_pkt.json"
+                );
+
+                
                 Utilities.Log(_timeStamp+","+
                     "Welcome,"+ //packetType
                     "SEND,"+ //Received or Sent
                     _toClient+","+ //clientIndex
-                    "Server.clients["+_toClient+"].player" //DataStruct referencing index above
+                    "Server.clients["+_toClient+"].player,"+ //DataStruct referencing index above
+                    Server.clients[_toClient].tcp.socket.Client.LocalEndPoint+","+ // Local IP address
+                    Server.clients[_toClient].tcp.socket.Client.RemoteEndPoint+"" // Remote Port
                     , "logs/packet_data_csv/send_Welcome.csv"
                 ); 
                 
@@ -127,6 +156,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ToClient\": "+_toClient+", "+
@@ -141,6 +171,30 @@ public class ServerSend
                     "\"quatw\": "+_player.transform.rotation.w+
                     "}}", "logs/packet_data_json/send_spawn_player_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_toClient+", "+
+                    "\"PlayerID\": "+Server.clients[_toClient].player.id+", "+
+                    "\"PlayerName\": \""+Server.clients[_toClient].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_toClient].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_toClient].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \""+Server.clients[_toClient].tcp.remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": "+Server.clients[_toClient].tcp.remoteIPEndPoint.Port+
+                    "}, "+
+                    "\"psnx\": "+_player.transform.position.x+", "+
+                    "\"psny\": "+_player.transform.position.y+", "+
+                    "\"psnz\": "+_player.transform.position.z+", "+
+                    "\"quatx\": "+_player.transform.rotation.x+", "+
+                    "\"quaty\": "+_player.transform.rotation.y+", "+
+                    "\"quatz\": "+_player.transform.rotation.z+", "+
+                    "\"quatw\": "+_player.transform.rotation.w+
+                    "}}", "logs/packet_data_json/send_spawn_player_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "SpawnPlayer,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -180,6 +234,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+", "+
@@ -189,6 +244,26 @@ public class ServerSend
                     "\"ClientPktNum\": "+_clientPktNum+
                     "}}", "logs/packet_data_json/send_player_position_pkt.json"
                 );
+                */
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_player.clientId+", "+
+                    "\"PlayerID\": "+_player.id+", "+
+                    "\"PlayerName\": \""+_player.username+"\", "+
+                    "\"Protocol\": \"UDP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"psnx\": "+_player.transform.position.x+", "+
+                    "\"psny\": "+_player.transform.position.y+", "+
+                    "\"psnz\": "+_player.transform.position.z+", "+
+                    "\"ClientPktNum\": "+_clientPktNum+
+                    "}}", "logs/packet_data_json/send_player_position_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "PlayerPosition,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -226,6 +301,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+", "+
@@ -236,6 +312,28 @@ public class ServerSend
                     "\"ClientPktNum\": "+_clientPktNum+
                     "}}", "logs/packet_data_json/send_player_rotation_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_player.clientId+", "+
+                    "\"PlayerID\": "+_player.id+", "+
+                    "\"PlayerName\": \""+_player.username+"\", "+
+                    "\"Protocol\": \"UDP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"quatx\": "+_player.transform.rotation.x+", "+
+                    "\"quaty\": "+_player.transform.rotation.y+", "+
+                    "\"quatz\": "+_player.transform.rotation.z+", "+
+                    "\"quatw\": "+_player.transform.rotation.w+", "+
+                    "\"ClientPktNum\": "+_clientPktNum+
+                    "}}", "logs/packet_data_json/send_player_rotation_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "PlayerRotation,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -263,17 +361,37 @@ public class ServerSend
         
     } // End ServerSend.PlayerRotation()
 
+    //playerId and clientId are the same thing for now... but adding this comment in case desire to change later
     public static void PlayerDisconnected(int _playerId)
     {
         string _methodName= "ServerSend.PlayerDisconnected()";
         try
         {
             long _timeStamp= Utilities.GenLongTimeStamp();
+            /*
             Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                 "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                 "\"PlayerID\": "+_playerId+
                 "}}"
             );
+            */
+
+            Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_playerId+", "+
+                    "\"PlayerID\": "+_playerId+", "+
+                    "\"PlayerName\": \""+Server.clients[_playerId].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"ALL\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}"+
+                    "}}", "logs/packet_data_json/send_player_disconnected_pkt.json"
+                );
+
+
             Utilities.Log(_timeStamp+","+
                 "PlayerDisconnected,"+ //packetType
                 "SEND,"+ //Received or Sent
@@ -305,12 +423,32 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+", "+
                     "\"PlayerHealth\": "+_player.health+
                     "}}", "logs/packet_data_json/send_player_health_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_player.id+", "+
+                    "\"PlayerID\": "+_player.id+", "+
+                    "\"PlayerName\": \""+_player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_player.id].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_player.id].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"PlayerHealth\": "+_player.health+
+                    "}}", "logs/packet_data_json/send_player_health_pkt.json"
+                );
+
+
                 Utilities.Log(_timeStamp+","+
                     "PlayerHealth,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -344,11 +482,29 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"PlayerID\": "+_player.id+
                     "}}", "logs/packet_data_json/send_player_respawn_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_player.id+", "+
+                    "\"PlayerID\": "+_player.id+", "+
+                    "\"PlayerName\": \""+_player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_player.id].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_player.id].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}"+
+                    "}}", "logs/packet_data_json/send_player_respawn_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "PlayerRespawned,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -382,6 +538,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ToClient\": "+_toClient+", "+
@@ -392,6 +549,28 @@ public class ServerSend
                     "\"hasItem\": \""+_hasItem+"\""+
                     "}}", "logs/packet_data_json/send_create_item_spawner_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_toClient+", "+
+                    "\"PlayerID\": "+_toClient+", "+
+                    "\"PlayerName\": \""+Server.clients[_toClient].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_toClient].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_toClient].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \""+Server.clients[_toClient].tcp.remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": "+Server.clients[_toClient].tcp.remoteIPEndPoint.Port+
+                    "}, "+
+                    "\"SpawnerID\": "+_spawnerId+", "+
+                    "\"psnx\": "+_spawnerPosition.x+", "+
+                    "\"psny\": "+_spawnerPosition.y+", "+
+                    "\"psnz\": "+_spawnerPosition.z+", "+
+                    "\"hasItem\": \""+_hasItem+"\""+
+                    "}}", "logs/packet_data_json/send_create_item_spawner_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "CreateItemSpawner,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -426,11 +605,30 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+
                     "}}", "logs/packet_data_json/send_item_spawned_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": \"ALL\", "+
+                    "\"PlayerID\": \"ALL\", "+
+                    "\"PlayerName\": \"NA\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"ALL\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"SpawnerID\": "+_spawnerId+""+
+                    "}}", "logs/packet_data_json/send_item_spawned_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "ItemSpawned,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -463,12 +661,32 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"SpawnerID\": "+_spawnerId+","+
                     "\"ByPlayer\": "+_byPlayer+
                     "}}", "logs/packet_data_json/send_item_pickedUp_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_byPlayer+", "+
+                    "\"PlayerID\": "+_byPlayer+", "+
+                    "\"PlayerName\": \""+Server.clients[_byPlayer].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_byPlayer].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_byPlayer].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"SpawnerID\": "+_spawnerId+""+
+                    "}}", "logs/packet_data_json/send_item_pickedUp_pkt.json"
+                );
+
+
                 Utilities.Log(_timeStamp+","+
                     "ItemPickedUp,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -504,6 +722,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ProjectileID\": "+_projectile.id+", "+
@@ -512,8 +731,29 @@ public class ServerSend
                     "\"psnz\": "+_projectile.transform.position.z+", "+
                     "\"ThrownByPlayer\": "+_thrownByPlayer+", "+
                     "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "logs/packet_data_json/send_player_throw_projectile_pkt.json"
+                    "}}", "logs/packet_data_json/send_SpawnProjectile_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_thrownByPlayer+", "+
+                    "\"PlayerID\": "+_thrownByPlayer+", "+
+                    "\"PlayerName\": \""+Server.clients[_thrownByPlayer].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_thrownByPlayer].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_thrownByPlayer].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"ThrownByPlayer\": "+_thrownByPlayer+", "+
+                    "\"ClientPktNum\": "+_clientPktNum+
+                    "}}", "logs/packet_data_json/send_SpawnProjectile_pkt.json"
+                );
+
+
+                
                 Utilities.Log(_timeStamp+","+
                     "SpawnProjectile,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -549,6 +789,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ProjectileID\": "+_projectile.id+", "+
@@ -557,6 +798,28 @@ public class ServerSend
                     "\"psnz\": "+_projectile.transform.position.z+
                     "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": \""+_projectile.thrownByPlayer+"\", "+
+                    "\"PlayerID\": \""+_projectile.thrownByPlayer+"\", "+
+                    "\"PlayerName\": \""+Server.clients[_projectile.thrownByPlayer].player.username+"\", "+
+                    "\"Protocol\": \"UDP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"ProjectileID\": "+_projectile.id+", "+
+                    "\"psnx\": "+_projectile.transform.position.x+", "+
+                    "\"psny\": "+_projectile.transform.position.y+", "+
+                    "\"psnz\": "+_projectile.transform.position.z+
+                    "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
+                );
+
+
                 Utilities.Log(_timeStamp+","+
                     "ProjectilePosition,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -590,14 +853,36 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ProjectileID\": "+_projectile.id+", "+
                     "\"psnx\": "+_projectile.transform.position.x+", "+
                     "\"psny\": "+_projectile.transform.position.y+", "+
                     "\"psnz\": "+_projectile.transform.position.z+
-                    "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
+                    "}}", "logs/packet_data_json/send_projectile_exploded_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": \""+_projectile.thrownByPlayer+"\", "+
+                    "\"PlayerID\": \""+_projectile.thrownByPlayer+"\", "+
+                    "\"PlayerName\": \""+Server.clients[_projectile.thrownByPlayer].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_projectile.thrownByPlayer].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_projectile.thrownByPlayer].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"ProjectileID\": "+_projectile.id+", "+
+                    "\"psnx\": "+_projectile.transform.position.x+", "+
+                    "\"psny\": "+_projectile.transform.position.y+", "+
+                    "\"psnz\": "+_projectile.transform.position.z+
+                    "}}", "logs/packet_data_json/send_projectile_exploded_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "ProjectileExploded,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -633,6 +918,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"EnemyID\": "+_enemy.id+", "+
@@ -641,12 +927,33 @@ public class ServerSend
                     "\"psnz\": "+_enemy.transform.position.z+
                     "}}", "logs/packet_data_json/send_spawn_enemy_to_all_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": \"ALL\", "+
+                    "\"PlayerID\": \"ALL\", "+
+                    "\"PlayerName\": \"ALL\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"ALL\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\": 0"+
+                    "}, "+
+                    "\"EnemyID\": "+_enemy.id+", "+
+                    "\"psnx\": "+_enemy.transform.position.x+", "+
+                    "\"psny\": "+_enemy.transform.position.y+", "+
+                    "\"psnz\": "+_enemy.transform.position.z+
+                    "}}", "logs/packet_data_json/send_spawn_enemy_to_all_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "SpawnEnemy,"+ //packetType
                     "SEND,"+ //Received or Sent
                     "ALL,"+ //clientIndex
                     "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
-                    , "logs/packet_data_csv/send_SpawnEnemy.csv"
+                    , "logs/packet_data_csv/send_SpawnEnemy_to_ALL.csv"
                 );
             }// End Optional packet logging
 
@@ -671,6 +978,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ToClient\": "+_toClient+", "+
@@ -680,6 +988,27 @@ public class ServerSend
                     "\"psnz\": "+_enemy.transform.position.z+
                     "}}", "logs/packet_data_json/send_spawn_enemy_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\": "+_toClient+", "+
+                    "\"PlayerID\": "+_toClient+", "+
+                    "\"PlayerName\": \""+Server.clients[_toClient].player.username+"\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \""+Server.clients[_toClient].tcp.localIPEndPoint.Address+"\", "+
+                    "\"ServerPort\": "+Server.clients[_toClient].tcp.localIPEndPoint.Port+", "+
+                    "\"ClientIPAddress\": \""+Server.clients[_toClient].tcp.remoteIPEndPoint.Address+"\", "+
+                    "\"ClientPort\": "+Server.clients[_toClient].tcp.remoteIPEndPoint.Port+
+                    "}, "+
+                    "\"EnemyID\": "+_enemy.id+", "+
+                    "\"psnx\": "+_enemy.transform.position.x+", "+
+                    "\"psny\": "+_enemy.transform.position.y+", "+
+                    "\"psnz\": "+_enemy.transform.position.z+
+                    "}}", "logs/packet_data_json/send_spawn_enemy_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "SpawnEnemy,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -728,6 +1057,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"EnemyID\": "+_enemy.id+", "+
@@ -736,6 +1066,27 @@ public class ServerSend
                     "\"psnz\": "+_enemy.transform.position.z+
                     "}}", "logs/packet_data_json/send_enemy_position_pkt.json"
                 );
+                */
+                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\":  \"ALL\", "+
+                    "\"PlayerID\":  \"ALL\", "+
+                    "\"PlayerName\":  \"ALL\", "+
+                    "\"Protocol\": \"UDP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\":  0"+
+                    "}, "+
+                    "\"EnemyID\": "+_enemy.id+", "+
+                    "\"psnx\": "+_enemy.transform.position.x+", "+
+                    "\"psny\": "+_enemy.transform.position.y+", "+
+                    "\"psnz\": "+_enemy.transform.position.z+
+                    "}}", "logs/packet_data_json/send_enemy_position_pkt.json"
+                );
+
+
                 Utilities.Log(_timeStamp+","+
                     "EnemyPosition,"+ //packetType
                     "SEND,"+ //Received or Sent
@@ -769,12 +1120,32 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
+                /*
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"EnemyID\": "+_enemy.id+", "+
                     "\"EnemyHealth\": "+_enemy.health+
                     "}}", "logs/packet_data_json/send_enemyHealth_pkt.json"
                 );
+                */
+
+                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                    "\"ClientID\":  \"ALL\", "+
+                    "\"PlayerID\":  \"ALL\", "+
+                    "\"PlayerName\":  \"ALL\", "+
+                    "\"Protocol\": \"TCP\", "+
+                    "\"Connection_Data\": {"+
+                    "\"ServerIPAddress\": \"NA\", "+
+                    "\"ServerPort\": 0, "+
+                    "\"ClientIPAddress\": \"ALL\", "+
+                    "\"ClientPort\":  0"+
+                    "}, "+
+                    "\"EnemyID\": "+_enemy.id+", "+
+                    "\"EnemyHealth\": "+_enemy.health+
+                    "}}", "logs/packet_data_json/send_enemyHealth_pkt.json"
+                );
+
                 Utilities.Log(_timeStamp+","+
                     "EnemyHealth,"+ //packetType
                     "SEND,"+ //Received or Sent
