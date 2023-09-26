@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -47,7 +47,7 @@ public class Server
             udpListener = new UdpClient(Port);
             udpListener.BeginReceive(UDPReceiveCallback, null);
 
-            Debug.Log($"Server started on port {Port}.");
+            Debug.Log($"Server started on TCP port {Port} and UDP port {Port}.");
         }
         catch (Exception e)
         {
@@ -66,7 +66,7 @@ public class Server
 
             TcpClient _client = tcpListener.EndAcceptTcpClient(_result);
             tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
-            Debug.Log($"Incoming connection from {_client.Client.RemoteEndPoint}...");
+            Debug.Log($"Incoming TCP connection from {_client.Client.RemoteEndPoint}...");
 
             for (int i = 1; i <= MaxPlayers; i++)
             {
@@ -76,7 +76,7 @@ public class Server
                     return;
                 }
             }
-            Debug.Log($"{_client.Client.RemoteEndPoint} failed to connect: Server full!");
+            Debug.Log($"TCP connection {_client.Client.RemoteEndPoint} failed to connect: Server full!");
                 long _OtherTimeStamp= Utilities.GenLongTimeStamp();
                 Utilities.Log("{\"Timestamp\": "+_OtherTimeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
@@ -95,43 +95,52 @@ public class Server
 
     private static void UDPReceiveCallback(IAsyncResult _result)
     {
+        
+        //IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, GlobalSettings.serverPort); /// changing to the game port, not just all UDP ports
+        byte[] _data = udpListener.EndReceive(_result, ref _clientEndPoint); // This checks for exising connection (started below) and grabs data as a byte[]
+        int _clientId =0; //Initializes client ID
+
         try
         {
-            IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            byte[] _data = udpListener.EndReceive(_result, ref _clientEndPoint);
-            udpListener.BeginReceive(UDPReceiveCallback, null);
+            udpListener.BeginReceive(UDPReceiveCallback, null); // This starts/restarts the listener (this method)
 
-            if (_data.Length < 4)
+            //Check if data is null... if not assign values below
+            if (_data.Length < 4) // verifies packet captured
             {
                 return;
             }
 
             using (Packet _packet = new Packet(_data))
             {
-                int _clientId = _packet.ReadInt();
+                _clientId = _packet.ReadInt();
 
                 if (_clientId == 0)
                 {
                     return;
                 }
 
-                if (clients[_clientId].udp.endPoint == null)
+                if (clients[_clientId].udp.remoteIPEndPoint == null)
                 {
                     // If this is a new connection
+                    Debug.Log($"New Incoming UDP endpoint {_clientEndPoint}...");
                     clients[_clientId].udp.Connect(_clientEndPoint);
+
                     return;
                 }
 
-                if (clients[_clientId].udp.endPoint.ToString() == _clientEndPoint.ToString())
+                if (clients[_clientId].udp.remoteIPEndPoint.ToString() == _clientEndPoint.ToString())
                 {
                     // Ensures that the client is not being impersonated by another by sending a false clientID
                     clients[_clientId].udp.HandleData(_packet);
+                    
                 }
             }
         }
         catch (Exception _ex)
         {
             Debug.Log($"Error receiving UDP data: {_ex}");
+            clients[_clientId].udp.Disconnect();
         }
     }
 
