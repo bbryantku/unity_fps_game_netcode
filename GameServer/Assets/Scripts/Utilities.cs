@@ -7,7 +7,7 @@ public static class Utilities
 {
     public static void Log(string _stuffToLog)
     {
-        string path = GetPath("log.txt");
+        string path = GetPath("logs/log.txt");
         StreamWriter writer = new StreamWriter(path, true);
         writer.WriteLine(_stuffToLog.ToString());
         writer.Close();
@@ -22,7 +22,7 @@ public static class Utilities
         
     public static void LogError(string _stuffToLog)
     {
-        Log(_stuffToLog, "error_Log.txt");
+        Log(_stuffToLog, "logs/error_Log.txt");
     }
     
 
