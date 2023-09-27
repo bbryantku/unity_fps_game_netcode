@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,18 +89,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-               /* Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ToClient\": "+_toClient+", "+
-                    "\"Message\": \""+_msg+"\","+
-                    //"\"LocalEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.LocalEndPoint+"\","+
-                    //"\"LocalEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.LocalEndPoint.Address+"\","+
-                    //"\"RemoteEndPoint\": \""+Server.clients[_toClient].tcp.socket.Client.RemoteEndPoint+"\""+
-                    //"\"LocalIPAddress\": \""+_localEndpoint.Address+"\","+
-                    "}}", "logs/packet_data_json/send_player_welcome_pkt.json"
-                );
-                */
-
+               
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_toClient+", "+
@@ -117,16 +107,21 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_welcome_pkt.json"
                 );
 
-                
-                Utilities.Log(_timeStamp+","+
-                    "Welcome,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    _toClient+","+ //clientIndex
-                    "Server.clients["+_toClient+"].player,"+ //DataStruct referencing index above
-                    Server.clients[_toClient].tcp.socket.Client.LocalEndPoint+","+ // Local IP address
-                    Server.clients[_toClient].tcp.socket.Client.RemoteEndPoint+"" // Remote Port
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_toClient+","+
+                    "NA,"+ //playerID
+                    "NA,"+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_toClient].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_toClient].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Address+","+
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Port+","+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ",,,,,"+ //w,s,a,d,space
+                    ",,,,"+ //Rotation x,y,z,w
+                    ",,,"//psn
                     , "logs/packet_data_csv/send_Welcome.csv"
-                ); 
+                );
                 
             }// End Optional packet logging
 
@@ -156,23 +151,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ToClient\": "+_toClient+", "+
-                    "\"PlayerID\": "+_player.id+", "+
-                    "\"Username\": \""+_player.username+"\", "+
-                    "\"psnx\": "+_player.transform.position.x+", "+
-                    "\"psny\": "+_player.transform.position.y+", "+
-                    "\"psnz\": "+_player.transform.position.z+", "+
-                    "\"quatx\": "+_player.transform.rotation.x+", "+
-                    "\"quaty\": "+_player.transform.rotation.y+", "+
-                    "\"quatz\": "+_player.transform.rotation.z+", "+
-                    "\"quatw\": "+_player.transform.rotation.w+
-                    "}}", "logs/packet_data_json/send_spawn_player_pkt.json"
-                );
-                */
-
+                
+                //JSON logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_toClient+", "+
@@ -188,20 +168,29 @@ public class ServerSend
                     "\"psnx\": "+_player.transform.position.x+", "+
                     "\"psny\": "+_player.transform.position.y+", "+
                     "\"psnz\": "+_player.transform.position.z+", "+
-                    "\"quatx\": "+_player.transform.rotation.x+", "+
+                    "\"quatx\": "+", "+
                     "\"quaty\": "+_player.transform.rotation.y+", "+
                     "\"quatz\": "+_player.transform.rotation.z+", "+
                     "\"quatw\": "+_player.transform.rotation.w+
                     "}}", "logs/packet_data_json/send_spawn_player_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "SpawnPlayer,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    _toClient+","+ //clientIndex
-                    "Server.clients["+_toClient+"].player["+_player.id+"]" //DataStruct referencing index above
-                    , "logs/packet_data_csv/send_SpawnPlayer.csv"
-                ); 
+                 //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_toClient+","+
+                    Server.clients[_toClient].player.id+","+ //playerID
+                    Server.clients[_toClient].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_toClient].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_toClient].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Address+","+
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Port+","+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ",,,,,"+ //w,s,a,d,space
+                    _player.transform.rotation.x+","+_player.transform.rotation.y+","+_player.transform.rotation.z+","+_player.transform.rotation.w+","+ //Rotation x,y,z,w
+                    _player.transform.position.x+","+_player.transform.position.y+","+_player.transform.position.z+"," //psn
+                    , "logs/packet_data_csv/send_spawn_player.csv"
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.spawnPlayer))
@@ -234,17 +223,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"PlayerID\": "+_player.id+", "+
-                    "\"psnx\": "+_player.transform.position.x+", "+
-                    "\"psny\": "+_player.transform.position.y+", "+
-                    "\"psnz\": "+_player.transform.position.z+", "+
-                    "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "logs/packet_data_json/send_player_position_pkt.json"
-                );
-                */
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_player.clientId+", "+
@@ -264,13 +244,23 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_position_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "PlayerPosition,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
+                 //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_player.clientId+","+
+                    _player.id+","+ //playerID
+                    _player.username+","+ //Player name
+                    "UDP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ",,,,,"+ //w,s,a,d,space
+                    ",,,,"+ //Rotation x,y,z,w
+                    _player.transform.position.x+","+_player.transform.position.y+","+_player.transform.position.z+","+ //psn
+                     _clientPktNum+""
                     , "logs/packet_data_csv/send_PlayerPosition.csv"
-                ); 
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.playerPosition))
@@ -301,19 +291,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"PlayerID\": "+_player.id+", "+
-                    "\"quatx\": "+_player.transform.rotation.x+", "+
-                    "\"quaty\": "+_player.transform.rotation.y+", "+
-                    "\"quatz\": "+_player.transform.rotation.z+", "+
-                    "\"quatw\": "+_player.transform.rotation.w+", "+
-                    "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "logs/packet_data_json/send_player_rotation_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_player.clientId+", "+
@@ -334,13 +313,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_rotation_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "PlayerRotation,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_player.clientId+","+
+                    _player.id+","+ //playerID
+                    _player.username+","+ //Player name
+                    "UDP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    _player.transform.rotation.x+","+_player.transform.rotation.y+","+_player.transform.rotation.z+","+_player.transform.rotation.w+","+ //Rotation x,y,z,w
+                    ","+","+","+ //psn
+                     _clientPktNum+""
                     , "logs/packet_data_csv/send_PlayerRotation.csv"
-                ); 
+                );
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.playerRotation))
@@ -383,7 +371,7 @@ public class ServerSend
                     "\"PlayerName\": \""+Server.clients[_playerId].player.username+"\", "+
                     "\"Protocol\": \"TCP\", "+
                     "\"Connection_Data\": {"+
-                    "\"ServerIPAddress\": \"ALL\", "+
+                    "\"ServerIPAddress\": \"NA\", "+
                     "\"ServerPort\": 0, "+
                     "\"ClientIPAddress\": \"ALL\", "+
                     "\"ClientPort\": 0"+
@@ -391,14 +379,21 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_disconnected_pkt.json"
                 );
 
-
-            Utilities.Log(_timeStamp+","+
-                "PlayerDisconnected,"+ //packetType
-                "SEND,"+ //Received or Sent
-                "ALL,"+ //clientIndex
-                "Server.clients[ALL].player["+_playerId+"]" //DataStruct referencing index above
-                , "logs/packet_data_csv/send_PlayerDisconnected.csv"
-            ); 
+            //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_playerId+","+
+                    _playerId+","+ //playerID
+                    Server.clients[_playerId].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
+                    , "logs/packet_data_csv/send_PlayerDisconnected.csv"
+                );
 
             using (Packet _packet = new Packet((int)ServerPackets.playerDisconnected))
             {
@@ -448,14 +443,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_health_pkt.json"
                 );
 
-
-                Utilities.Log(_timeStamp+","+
-                    "PlayerHealth,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_player.id+","+
+                    _player.id+","+ //playerID
+                    _player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_player.id].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_player.id].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_PlayerHealth.csv"
-                ); 
+                );
+
             } // End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.playerHealth))
@@ -482,14 +485,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"PlayerID\": "+_player.id+
-                    "}}", "logs/packet_data_json/send_player_respawn_pkt.json"
-                );
-                */
 
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_player.id+", "+
@@ -505,13 +502,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_player_respawn_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "PlayerRespawned,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].player["+_player.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_player.id+","+
+                    _player.id+","+ //playerID
+                    _player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_player.id].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_player.id].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_PlayerRespawned.csv"
-                ); 
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.playerRespawned))
@@ -538,19 +544,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ToClient\": "+_toClient+", "+
-                    "\"SpawnerID\": "+_spawnerId+", "+
-                    "\"psnx\": "+_spawnerPosition.x+", "+
-                    "\"psny\": "+_spawnerPosition.y+", "+
-                    "\"psnz\": "+_spawnerPosition.z+", "+
-                    "\"hasItem\": \""+_hasItem+"\""+
-                    "}}", "logs/packet_data_json/send_create_item_spawner_pkt.json"
-                );
-                */
 
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_toClient+", "+
@@ -571,13 +566,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_create_item_spawner_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "CreateItemSpawner,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    _toClient+","+ //clientIndex
-                    "Server.clients["+_toClient+"].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_toClient+","+
+                    _toClient+","+ //playerID
+                    Server.clients[_toClient].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_toClient].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_toClient].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Address+","+
+                    Server.clients[_toClient].tcp.remoteIPEndPoint.Port+","+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_CreateItemSpawner.csv"
-                ); 
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.createItemSpawner))
@@ -620,7 +624,7 @@ public class ServerSend
                     "\"PlayerName\": \"NA\", "+
                     "\"Protocol\": \"TCP\", "+
                     "\"Connection_Data\": {"+
-                    "\"ServerIPAddress\": \"ALL\", "+
+                    "\"ServerIPAddress\": \"NA\", "+
                     "\"ServerPort\": 0, "+
                     "\"ClientIPAddress\": \"ALL\", "+
                     "\"ClientPort\": 0"+
@@ -629,13 +633,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_item_spawned_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "ItemSpawned,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+"ALL,"+
+                    "ALL,"+ //playerID
+                    "ALL,"+ //Player name
+                    "TCP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_ItemSpawned.csv"
-                ); 
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.itemSpawned))
@@ -661,15 +674,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"SpawnerID\": "+_spawnerId+","+
-                    "\"ByPlayer\": "+_byPlayer+
-                    "}}", "logs/packet_data_json/send_item_pickedUp_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_byPlayer+", "+
@@ -686,14 +692,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_item_pickedUp_pkt.json"
                 );
 
-
-                Utilities.Log(_timeStamp+","+
-                    "ItemPickedUp,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.itemSpawners["+_spawnerId+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_byPlayer+","+
+                    _byPlayer+","+ //playerID
+                    Server.clients[_byPlayer].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_byPlayer].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_byPlayer].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_ItemPickedUp.csv"
                 );
+
             }// End Optional packet logging
 
 
@@ -722,19 +736,7 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ProjectileID\": "+_projectile.id+", "+
-                    "\"psnx\": "+_projectile.transform.position.x+", "+
-                    "\"psny\": "+_projectile.transform.position.y+", "+
-                    "\"psnz\": "+_projectile.transform.position.z+", "+
-                    "\"ThrownByPlayer\": "+_thrownByPlayer+", "+
-                    "\"ClientPktNum\": "+_clientPktNum+
-                    "}}", "logs/packet_data_json/send_SpawnProjectile_pkt.json"
-                );
-                */
-
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_thrownByPlayer+", "+
@@ -753,14 +755,23 @@ public class ServerSend
                 );
 
 
-                
-                Utilities.Log(_timeStamp+","+
-                    "SpawnProjectile,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_thrownByPlayer+","+
+                    _thrownByPlayer+","+ //playerID
+                    Server.clients[_thrownByPlayer].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_thrownByPlayer].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_thrownByPlayer].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+","+ //psn
+                    _clientPktNum+""
                     , "logs/packet_data_csv/send_SpawnProjectile.csv"
-                ); 
+                );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.spawnProjectile))
@@ -789,17 +800,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ProjectileID\": "+_projectile.id+", "+
-                    "\"psnx\": "+_projectile.transform.position.x+", "+
-                    "\"psny\": "+_projectile.transform.position.y+", "+
-                    "\"psnz\": "+_projectile.transform.position.z+
-                    "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
-                );
-                */
-
+               
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": \""+_projectile.thrownByPlayer+"\", "+
@@ -819,14 +821,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_projectile_position_pkt.json"
                 );
 
-
-                Utilities.Log(_timeStamp+","+
-                    "ProjectilePosition,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_projectile.thrownByPlayer+","+
+                    _projectile.thrownByPlayer+","+ //playerID
+                    Server.clients[_projectile.thrownByPlayer].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    _projectile.transform.position.x+","+_projectile.transform.position.y+","+_projectile.transform.position.z+"," //psn
                     , "logs/packet_data_csv/send_ProjectilePosition.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.projectilePosition))
@@ -853,17 +863,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ProjectileID\": "+_projectile.id+", "+
-                    "\"psnx\": "+_projectile.transform.position.x+", "+
-                    "\"psny\": "+_projectile.transform.position.y+", "+
-                    "\"psnz\": "+_projectile.transform.position.z+
-                    "}}", "logs/packet_data_json/send_projectile_exploded_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": \""+_projectile.thrownByPlayer+"\", "+
@@ -883,13 +884,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_projectile_exploded_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "ProjectileExploded,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.projectiles["+_projectile.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_projectile.thrownByPlayer+","+
+                    _projectile.thrownByPlayer+","+ //playerID
+                    Server.clients[_projectile.thrownByPlayer].player.username+","+ //Player name
+                    "TCP,"+ //Protocol
+                    Server.clients[_projectile.thrownByPlayer].tcp.localIPEndPoint.Address+","+ //Server Address
+                    Server.clients[_projectile.thrownByPlayer].tcp.localIPEndPoint.Port+","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    _projectile.transform.position.x+","+_projectile.transform.position.y+","+_projectile.transform.position.z+"," //psn
                     , "logs/packet_data_csv/send_ProjectileExploded.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.projectileExploded))
@@ -918,17 +928,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"EnemyID\": "+_enemy.id+", "+
-                    "\"psnx\": "+_enemy.transform.position.x+", "+
-                    "\"psny\": "+_enemy.transform.position.y+", "+
-                    "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "logs/packet_data_json/send_spawn_enemy_to_all_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": \"ALL\", "+
@@ -948,13 +949,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_spawn_enemy_to_all_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "SpawnEnemy,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+"ALL,"+
+                    "ALL,"+ //playerID
+                    "ALL,"+ //Player name
+                    "TCP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    _enemy.transform.position.x+","+_enemy.transform.position.y+","+_enemy.transform.position.z+"," //psn
                     , "logs/packet_data_csv/send_SpawnEnemy_to_ALL.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.spawnEnemy))
@@ -978,18 +988,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"ToClient\": "+_toClient+", "+
-                    "\"EnemyID\": "+_enemy.id+", "+
-                    "\"psnx\": "+_enemy.transform.position.x+", "+
-                    "\"psny\": "+_enemy.transform.position.y+", "+
-                    "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "logs/packet_data_json/send_spawn_enemy_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\": "+_toClient+", "+
@@ -1009,13 +1009,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_spawn_enemy_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "SpawnEnemy,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    _toClient+","+ //clientIndex
-                    "Server.clients["+_toClient+"].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+","+_toClient+","+
+                    _toClient+","+ //playerID
+                    Server.clients[_toClient].player.username+","+ //Player name
+                    "UDP,"+ //Protocol
+                    "NA,"+ //Server Address
+                    "0,"+ //Server Port NA/0 for UDP
+                    Server.clients[_toClient].udp.remoteIPEndPoint.Address+","+
+                    Server.clients[_toClient].udp.remoteIPEndPoint.Port+","+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    _enemy.transform.position.x+","+_enemy.transform.position.y+","+_enemy.transform.position.z+"," //psn
                     , "logs/packet_data_csv/send_SpawnEnemy.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.spawnEnemy))
@@ -1057,17 +1066,9 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"EnemyID\": "+_enemy.id+", "+
-                    "\"psnx\": "+_enemy.transform.position.x+", "+
-                    "\"psny\": "+_enemy.transform.position.y+", "+
-                    "\"psnz\": "+_enemy.transform.position.z+
-                    "}}", "logs/packet_data_json/send_enemy_position_pkt.json"
-                );
-                */
-                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\":  \"ALL\", "+
                     "\"PlayerID\":  \"ALL\", "+
@@ -1086,14 +1087,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_enemy_position_pkt.json"
                 );
 
-
-                Utilities.Log(_timeStamp+","+
-                    "EnemyPosition,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+",ALL,"+
+                    "ALL,"+ //playerID
+                    "ALL,"+ //Player name
+                    "UDP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    _enemy.transform.position.x+","+_enemy.transform.position.y+","+_enemy.transform.position.z+"," //psn
                     , "logs/packet_data_csv/send_EnemyPosition.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.enemyPosition))
@@ -1120,15 +1129,8 @@ public class ServerSend
             // Optional packet logging 
             if (GlobalSettings.packetSendLogging){
                 long _timeStamp= Utilities.GenLongTimeStamp();
-                /*
-                Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
-                    "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
-                    "\"EnemyID\": "+_enemy.id+", "+
-                    "\"EnemyHealth\": "+_enemy.health+
-                    "}}", "logs/packet_data_json/send_enemyHealth_pkt.json"
-                );
-                */
-
+                
+                //JSON Logging
                 Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
                     "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
                     "\"ClientID\":  \"ALL\", "+
@@ -1146,13 +1148,22 @@ public class ServerSend
                     "}}", "logs/packet_data_json/send_enemyHealth_pkt.json"
                 );
 
-                Utilities.Log(_timeStamp+","+
-                    "EnemyHealth,"+ //packetType
-                    "SEND,"+ //Received or Sent
-                    "ALL,"+ //clientIndex
-                    "Server.clients[ALL].GameManager.enemies["+_enemy.id+"]" //DataStruct referencing index above
+                //log CSV
+                Utilities.Log(_timeStamp+","+_methodName+",ALL,"+
+                    "ALL,"+ //playerID
+                    "ALL,"+ //Player name
+                    "TCP,"+ //Protocol
+                    ","+ //Server Address
+                    ","+ //Server Port NA/0 for UDP
+                    "ALL,"+
+                    "0,"+
+                    //"w,s,a,d, ,qx,qy,qz,qw,px,py,pz,packet_num"
+                    ","+","+","+","+","+ //w,s,a,d,space
+                    ","+","+","+","+ //Rotation x,y,z,w
+                    ","+","+"," //psn
                     , "logs/packet_data_csv/send_EnemyHealth.csv"
                 );
+
             }// End Optional packet logging
 
             using (Packet _packet = new Packet((int)ServerPackets.enemyHealth))
