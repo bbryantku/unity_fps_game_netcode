@@ -648,7 +648,6 @@ public class Client : MonoBehaviour
         Client.instance.playerRotationPacketCounter =0;
         Client.instance.playerShootPacketCounter =0;
         Client.instance.playerThrowPacketCounter =0;
-
         Client.instance.packetSendTimes = new Dictionary<int, long>();
         Client.instance.movePacketSendTimes = new Dictionary<int, long>();
         Client.instance.throwPacketSendTimes = new Dictionary<int, long>();
