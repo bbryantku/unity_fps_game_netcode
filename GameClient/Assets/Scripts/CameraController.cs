@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,6 +43,9 @@ public class CameraController : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
         player.transform.rotation = Quaternion.Euler(0f, horizontalRotation, 0f);
+
+        // Added to see if player is wiggling mouse. Does not actually affect game play
+        ClientSend.PlayerMoveMouse(player.transform.rotation); 
     }
 
     private void ToggleCursorMode()
