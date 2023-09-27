@@ -241,5 +241,53 @@ public class ClientSend : MonoBehaviour
                 _methodName, "Error within "+_methodName, e));
         }    
     } //End ClientSend.PlayerThrowItem()
+
+
+    // packet_type_number == 5
+    public static void PlayerMoveMouse(Quaternion _rotation)
+    {
+        string _methodName= "ClientSend.PlayerMoveMouse()";
+        try
+        {
+            
+           // Optional packet logging
+            if (Client.instance.packetSendLogging){
+                long _timeStamp= Utilities.GenLongTimeStamp();
+            
+                if (Client.instance.packetSendLogging){
+                
+                    Utilities.Log("{\"Timestamp\": "+_timeStamp+","+
+                        "\"MethodCall\": \""+_methodName+"\", \"Data parsed\": {"+
+                        "\"quatx\": "+_rotation.x+", "+
+                        "\"quaty\": "+_rotation.y+", "+
+                        "\"quatz\": "+_rotation.z+", "+
+                        "\"quatw\": "+_rotation.w+""+
+                        "}}", "logs/packet_data_json/send_player_mouse.json"
+                    );
+                    //log CSV
+                    Utilities.Log(_timeStamp+","+
+                        "PlayerMouse,"+ //packetType
+                        "SEND,"+ //Received or Sent
+                        Client.instance.myId+","+
+                        "GameManager.players"
+                        , "logs/packet_data_csv/send_PlayerMouse.csv"
+                    ); 
+                }
+
+            }// End Optional packet logging
+
+            using (Packet _packet = new Packet((int)ClientPackets.playerMoveMouse))
+            {
+                _packet.Write(_rotation);
+
+                SendUDPData(_packet);
+            }
+        }
+        catch (Exception e)
+        {
+	        Utilities.LogError(Utilities.FmtLogMethodExceptionJSON(
+                _methodName, "Error within "+_methodName, e));
+        }    
+    } //End ClientSend.PlayerMoveMouse()
     #endregion
 }
