@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -31,7 +31,8 @@ public enum ClientPackets
     welcomeReceived = 1,
     playerMovement,
     playerShoot,
-    playerThrowItem
+    playerThrowItem,
+    playerMoveMouse
 }
 
 public class Packet : IDisposable
