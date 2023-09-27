@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ public class GlobalSettings : MonoBehaviour
                 );
             //Create header file for CSV data
             Utilities.Log("timeStamp"+","+
-                    "PacketType,Action,EntityIndex,LocalEntityDict"
+                    "MethodCall,ClientID,PlayerID,PlayerName,Protocol,ServerIPAddress,ServerPort,ClientIPAddress,ClientPort,W_Key,S_Key,A_Key,D_Key,Space_Key,quatx,quaty,quatz,quatw,psnx,psny,psnz,Packet_Num"
                     , "logs/packet_data_csv/Packet_stats_header_fields.csv"
                 );
 
