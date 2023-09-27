@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -178,7 +178,8 @@ public class Server
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 { (int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
-                { (int)ClientPackets.playerThrowItem, ServerHandle.PlayerThrowItem }
+                { (int)ClientPackets.playerThrowItem, ServerHandle.PlayerThrowItem },
+                { (int)ClientPackets.playerMoveMouse, ServerHandle.PlayerMoveMouse },
             };
 
             Debug.Log("Initialized packets.");
