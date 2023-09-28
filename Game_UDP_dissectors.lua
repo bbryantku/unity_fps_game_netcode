@@ -94,10 +94,7 @@ function fps_game_netcode_UDP_protocol.dissector(buffer, pinfo, tree)
     packet_type_name     = "player movement" 
     subtree:add_le(packet_type, buffer(8,4)):append_text(" (".. packet_type_name .. ")")
     
-    local loop_control =0 -- initialize loop control
-    local input_length =0 -- initializes input_length as numerical value
     input_length = buffer(12,4):le_int() -- Note this is le_int NOT le_unit.. this allows for arithmetic later
-    loop_control = input_length --Set loop to iterate based on input_length
     subtree:add_le(player_input_length, buffer(12,4))
 
     -- process bool values, each is a single byte
@@ -136,6 +133,20 @@ function fps_game_netcode_UDP_protocol.dissector(buffer, pinfo, tree)
     subtree:add_le(player_quaternion_z,         buffer(20,4))
     subtree:add_le(player_quaternion_w,         buffer(24,4))
     subtree:add_le(packet_num,                  buffer(28,4))
+  end
+
+  --Mouse Movement packet sent to Server
+  --Note Client.UDP.SendData prepends the player ID at beginning of packet
+  --This is not done in TCP sent messages, as TCP may be tracked by connection
+  if packet_type_number == 5 and pinfo.dst_port == game_protocol_number then
+    packet_type_name     = "player mouse movement" 
+    subtree:add_le(packet_type, buffer(8,4)):append_text(" (".. packet_type_name .. ")")
+    
+    --Process rotation values, each is a 4 byte float
+    subtree:add_le(player_quaternion_x,         buffer(12,4))
+    subtree:add_le(player_quaternion_y,         buffer(16,4))
+    subtree:add_le(player_quaternion_z,         buffer(20,4))
+    subtree:add_le(player_quaternion_w,         buffer(24,4))
   end
 
   --Projectile Position sent to Client
